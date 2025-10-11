@@ -17,23 +17,24 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     {
       icon: MessageCircle,
       title: t('askQuestion'),
-      description: 'Get instant legal guidance in your language',
+      description: language === 'hi' ? 'अपनी भाषा में तुरंत कानूनी मार्गदर्शन प्राप्त करें' :
+                   language === 'te' ? 'మీ భాషలో తక్షణ చట్టపరమైన మార్గదర్శకత్వం పొందండి' :
+                   language === 'mr' ? 'तुमच्या भाषेत त्वरित कायदेशीर मार्गदर्शन मिळवा' :
+                   'Get instant legal guidance in your language',
       action: () => onNavigate('chat'),
       color: 'text-[#153243]',
       bgColor: 'bg-[#153243]/10'
     },
     {
-      icon: Mic,
-      title: t('voiceInput'),
-      description: 'Speak your legal questions naturally',
-      action: () => onNavigate('chat'),
-      color: 'text-[#284B63]',
-      bgColor: 'bg-[#284B63]/10'
-    },
-    {
       icon: Camera,
-      title: 'Scan Document',
-      description: 'Upload and explain legal documents with AI',
+      title: language === 'hi' ? 'दस्तावेज़ स्कैन करें' :
+             language === 'te' ? 'డాక్యుమెంట్ స్కాన్ చేయండి' :
+             language === 'mr' ? 'दस्तऐवज स्कॅन करा' :
+             'Scan Document',
+      description: language === 'hi' ? 'AI के साथ कानूनी दस्तावेज़ों को अपलोड और समझें' :
+                   language === 'te' ? 'AI తో చట్టపరమైన పత్రాలను అప్‌లోడ్ చేసి వివరించండి' :
+                   language === 'mr' ? 'AI सह कायदेशीर कागदपत्रे अपलोड करा आणि समजून घ्या' :
+                   'Upload and explain legal documents with AI',
       action: () => onNavigate('ocr'),
       color: 'text-[#153243]',
       bgColor: 'bg-[#153243]/10'
@@ -41,7 +42,10 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     {
       icon: FileText,
       title: t('documentGen'),
-      description: 'Generate FIR, RTI and other legal documents',
+      description: language === 'hi' ? 'FIR, RTI और अन्य कानूनी दस्तावेज तैयार करें' :
+                   language === 'te' ? 'FIR, RTI మరియు ఇతర చట్టపరమైన పత్రాలను తయారు చేయండి' :
+                   language === 'mr' ? 'FIR, RTI आणि इतर कायदेशीर कागदपत्रे तयार करा' :
+                   'Generate FIR, RTI and other legal documents',
       action: () => onNavigate('document'),
       color: 'text-[#284B63]',
       bgColor: 'bg-[#284B63]/10'
@@ -49,7 +53,10 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     {
       icon: Users,
       title: t('ngoDirectory'),
-      description: 'Find legal aid organizations near you',
+      description: language === 'hi' ? 'अपने आस-पास की कानूनी सहायता संस्थाओं को खोजें' :
+                   language === 'te' ? 'మీ సమీపంలోని న్యాయ సహాయ సంస్థలను కనుగొనండి' :
+                   language === 'mr' ? 'तुमच्या जवळील कायदेशीर मदत संस्था शोधा' :
+                   'Find legal aid organizations near you',
       action: () => onNavigate('ngo'),
       color: 'text-[#153243]',
       bgColor: 'bg-[#153243]/10'
@@ -131,7 +138,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
 language === 'te' ? 'లెజిస్లేట్ AI మీ భాషలో న్యాయ సహాయం అందిస్తుంది. FIR నమోదు చేయడం నుండి RTI దరఖాస్తు వరకు, మేము మీ ప్రతి చట్టపరమైన అవసరంలో సహాయం చేస్తాము.' :
 language === 'mr' ? 'लेजिस्लेट AI तुमच्या भाषेत कायदेशीर मदत पुरवते. FIR नोंदणीपासून RTI अर्जापर्यंत, आम्ही तुमच्या प्रत्येक कायदेशीर गरजेत मदत करतो.' :
 'Legislate AI provides legal assistance in your language. From filing FIR to RTI applications, we help with all your legal needs.'
-}
+  }
             </p>
           </CardContent>
         </Card>
