@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { MessageCircle, FileText, Users, Mic, Scale, Heart, Camera } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSelector from '@/components/LanguageSelector';
+import QuestionSection from '../components/QuestionSection';
 
 interface HomeProps {
   onNavigate: (page: 'chat' | 'document' | 'ngo' | 'ocr') => void;
@@ -18,48 +19,48 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       title: t('askQuestion'),
       description: 'Get instant legal guidance in your language',
       action: () => onNavigate('chat'),
-      color: 'text-trust-blue',
-      bgColor: 'bg-trust-blue/10'
+      color: 'text-[#153243]',
+      bgColor: 'bg-[#153243]/10'
     },
     {
       icon: Mic,
       title: t('voiceInput'),
       description: 'Speak your legal questions naturally',
       action: () => onNavigate('chat'),
-      color: 'text-justice-gold',
-      bgColor: 'bg-justice-gold/10'
+      color: 'text-[#284B63]',
+      bgColor: 'bg-[#284B63]/10'
     },
     {
       icon: Camera,
       title: 'Scan Document',
       description: 'Upload and explain legal documents with AI',
       action: () => onNavigate('ocr'),
-      color: 'text-empowerment-green',
-      bgColor: 'bg-empowerment-green/10'
+      color: 'text-[#153243]',
+      bgColor: 'bg-[#153243]/10'
     },
     {
       icon: FileText,
       title: t('documentGen'),
       description: 'Generate FIR, RTI and other legal documents',
       action: () => onNavigate('document'),
-      color: 'text-empowerment-green',
-      bgColor: 'bg-empowerment-green/10'
+      color: 'text-[#284B63]',
+      bgColor: 'bg-[#284B63]/10'
     },
     {
       icon: Users,
       title: t('ngoDirectory'),
       description: 'Find legal aid organizations near you',
       action: () => onNavigate('ngo'),
-      color: 'text-primary',
-      bgColor: 'bg-primary/10'
+      color: 'text-[#153243]',
+      bgColor: 'bg-[#153243]/10'
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+    <div className="min-h-screen bg-[#EEFCEB]">
       <div className="container mx-auto px-4 py-8">
         {/* Hero Section */}
-        <div className="relative mb-12 rounded-3xl overflow-hidden bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 p-12 text-white">
+        <div className="relative mb-12 rounded-3xl overflow-hidden bg-gradient-to-r from-[#153243] via-[#284B63] to-[#B4B8AB] p-12 text-[#F4F9E9]">
           <div className="absolute inset-0 bg-black/20"></div>
           <div className="relative z-10">
             <div className="text-center">
@@ -91,23 +92,23 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           {features.map((feature, index) => (
             <Card 
               key={index}
-              className="hover:shadow-lg transition-all duration-300 cursor-pointer group"
+              className="hover:shadow-lg transition-all duration-300 cursor-pointer group bg-[#F4F9E9]"
               onClick={feature.action}
             >
               <CardHeader className="text-center pb-2">
                 <div className={`w-16 h-16 rounded-full ${feature.bgColor} flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}>
                   <feature.icon className={`h-8 w-8 ${feature.color}`} />
                 </div>
-                <CardTitle className="text-lg">{feature.title}</CardTitle>
+                <CardTitle className="text-lg text-[#153243]">{feature.title}</CardTitle>
               </CardHeader>
               <CardContent className="text-center">
-                <p className="text-sm text-muted-foreground mb-4">
+                <p className="text-sm text-[#284B63] mb-4">
                   {feature.description}
                 </p>
                 <Button 
                   variant="outline" 
                   size="sm"
-                  className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+                  className="w-full group-hover:bg-[#153243] group-hover:text-[#F4F9E9] transition-colors border-[#284B63]"
                 >
                   Get Started
                 </Button>
@@ -117,22 +118,25 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         </div>
 
         {/* Info Section */}
-        <Card className="max-w-3xl mx-auto">
+        <Card className="max-w-3xl mx-auto bg-[#F4F9E9]">
           <CardContent className="p-8 text-center">
-            <h2 className="text-2xl font-semibold mb-4 text-foreground">
+            <h2 className="text-2xl font-semibold mb-4 text-[#153243]">
               {language === 'hi' ? 'सभी के लिए न्याय' :
                language === 'te' ? 'అందరికీ న్యాయం' :
                language === 'mr' ? 'सर्वांसाठी न्याय' :
                'Justice for Everyone'}
             </h2>
-            <p className="text-muted-foreground leading-relaxed">
-              {language === 'hi' ? 'लवेबल AI आपकी भाषा में कानूनी सहायता प्रदान करता है। FIR दर्ज करने से लेकर RTI आवेदन तक, हम आपकी हर कानूनी जरूरत में मदद करते हैं।' :
-               language === 'te' ? 'లవేబల్ AI మీ భాషలో న్యాయ సహాయం అందిస్తుంది. FIR నమోదు చేయడం నుండి RTI దరఖాస్తు వరకు, మేము మీ ప్రతి చట్టపరమైన అవసరంలో సహాయం చేస్తాము.' :
-               language === 'mr' ? 'लवेबल AI तुमच्या भाषेत कायदेशीर मदत पुरवते. FIR नोंदणीपासून RTI अर्जापर्यंत, आम्ही तुमच्या प्रत्येक कायदेशीर गरजेत मदत करतो.' :
-               'Lovable AI provides legal assistance in your language. From filing FIR to RTI applications, we help with all your legal needs.'}
+            <p className="text-[#284B63] leading-relaxed">
+              {language === 'hi' ? 'लेजिस्लेट AI आपकी भाषा में कानूनी सहायता प्रदान करता है। FIR दर्ज करने से लेकर RTI आवेदन तक, हम आपकी हर कानूनी जरूरत में मदद करते हैं।' :
+language === 'te' ? 'లెజిస్లేట్ AI మీ భాషలో న్యాయ సహాయం అందిస్తుంది. FIR నమోదు చేయడం నుండి RTI దరఖాస్తు వరకు, మేము మీ ప్రతి చట్టపరమైన అవసరంలో సహాయం చేస్తాము.' :
+language === 'mr' ? 'लेजिस्लेट AI तुमच्या भाषेत कायदेशीर मदत पुरवते. FIR नोंदणीपासून RTI अर्जापर्यंत, आम्ही तुमच्या प्रत्येक कायदेशीर गरजेत मदत करतो.' :
+'Legislate AI provides legal assistance in your language. From filing FIR to RTI applications, we help with all your legal needs.'
+}
             </p>
           </CardContent>
         </Card>
+
+        
       </div>
     </div>
   );

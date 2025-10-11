@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Home from './Home';
-import ChatBox from '@/components/ChatBox';
+import QuestionSection from '@/components/QuestionSection';  // Changed import
 import DocumentGenerator from '@/components/DocumentGenerator';
 import NGODirectory from '@/components/NGODirectory';
 import { Button } from '@/components/ui/button';
@@ -35,7 +35,7 @@ const Index = () => {
               </Button>
               <h1 className="text-3xl font-bold text-foreground">{t('legalHelp')}</h1>
             </div>
-            <ChatBox />
+            <QuestionSection />
           </div>
         );
       case 'document':
