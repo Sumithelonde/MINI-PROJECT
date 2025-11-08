@@ -10,6 +10,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 import { sendChatMessage } from '@/services/openrouter';
 import { downloadPDF, sharePDFOnWhatsApp, type DocumentData } from '@/utils/pdfGenerator';
+import BackToHome from './BackToHome';
 
 type DocumentType = 'FIR' | 'RTI';
 
@@ -224,14 +225,13 @@ Format this as an official legal document. Do not add any asterisks, markdown, o
   };
 
     return (
-      <div className="space-y-6 max-w-4xl mx-auto">
+      <div className="space-y-6 max-w-4xl mx-auto p-4">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold text-foreground">{t('documentGen')}</h2>
+        <BackToHome />
+      </div>
         {/* Header */}
-        <div className="text-center space-y-2">
-          <h2 className="text-2xl font-bold text-foreground">{t('documentGen')}</h2>
-          <p className="text-muted-foreground">
-            Generate legal documents with AI assistance
-          </p>
-        </div>
+        
 
         <div className="grid gap-6 md:grid-cols-2">
           {/* Input Form */}
