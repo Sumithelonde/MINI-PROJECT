@@ -6,21 +6,23 @@ import NGODirectory from '@/components/NGODirectory';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import Dictionary from './Dictionary';
+import Translator from './Translator';
 
-type Page = 'home' | 'chat' | 'document' | 'ngo' | 'ocr';
+type Page = 'home' | 'chat' | 'document' | 'ngo' | 'ocr' | 'dictionary' | 'translator';
 
 const Index = () => {
   const [currentPage, setCurrentPage] = useState<Page>('home');
   const { t } = useLanguage();
 
-  const handleNavigation = (page: Page) => {
+  const handleNavigate = (page: 'chat' | 'document' | 'ngo' | 'ocr' | 'dictionary' | 'translator') => {
     setCurrentPage(page);
   };
 
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
-        return <Home onNavigate={handleNavigation} />;
+        return <Home onNavigate={handleNavigate} />;
       case 'chat':
         return (
           <div className="container mx-auto px-4 py-8 max-w-4xl">
@@ -90,8 +92,12 @@ const Index = () => {
             </React.Suspense>
           </div>
         );
+      case 'dictionary':
+        return <Dictionary />;
+      case 'translator':
+        return <Translator />;
       default:
-        return <Home onNavigate={handleNavigation} />;
+        return <Home onNavigate={handleNavigate} />;
     }
   };
 
