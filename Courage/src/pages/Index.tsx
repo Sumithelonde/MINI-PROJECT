@@ -8,6 +8,8 @@ import { ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Dictionary from './Dictionary';
 import Translator from './Translator';
+import DocumentTranslator from '@/components/DocumentTranslator';
+import LegalDictionary from '@/components/LegalDictionary';
 
 type Page = 'home' | 'chat' | 'document' | 'ngo' | 'ocr' | 'dictionary' | 'translator';
 
@@ -93,9 +95,9 @@ const Index = () => {
           </div>
         );
       case 'dictionary':
-        return <Dictionary />;
+        return <LegalDictionary />;
       case 'translator':
-        return <Translator />;
+        return <DocumentTranslator />;
       default:
         return <Home onNavigate={handleNavigate} />;
     }

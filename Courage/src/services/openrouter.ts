@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const OPENROUTER_API_KEY = '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';
+const OPENROUTER_API_KEY = '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';
 const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
 
 export interface ChatMessage {
@@ -17,32 +17,34 @@ export interface ChatResponse {
   }[];
 }
 
-export async function sendChatMessage(messages: Array<{ role: string; content: string }>) {
+export const sendChatMessage = async (messages: Array<{ role: string; content: string }>) => {
   try {
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': window.location.href,
+        'HTTP-Referer': window.location.origin,
       },
       body: JSON.stringify({
         model: 'mistralai/mistral-7b-instruct',
-        messages: messages
+        messages: messages,
+        temperature: 0.7,
+        max_tokens: 2000,
       }),
     });
 
     if (!response.ok) {
-      throw new Error('API request failed');
+      throw new Error(`API error: ${response.status}`);
     }
 
     const data = await response.json();
     return data.choices[0].message.content;
   } catch (error) {
     console.error('OpenRouter API Error:', error);
-    throw new Error('Failed to generate document. Please try again.');
+    throw error;
   }
-}
+};
 
 // Available models - can be expanded based on OpenRouter offerings
 export const AVAILABLE_MODELS = {
