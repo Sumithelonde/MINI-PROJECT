@@ -7,29 +7,11 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import Index from "./pages/Index";
 import OCRScanner from "./components/OCRScanner";
 import NotFound from "./pages/NotFound";
-import { useEffect } from "react";
-import "@n8n/chat/style.css";
-import { createChat } from "@n8n/chat";
-import "./custom-n8n-chat.css"; // 
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react';
 
 const queryClient = new QueryClient();
 
 const App = () => {
-  useEffect(() => {
-    createChat({
-      webhookUrl: "https://sumithelonde.app.n8n.cloud/webhook/86816cfb-edb3-41c2-a959-b5c72a110eb6/chat", // Only the webhook ID
-      logoUrl: "https://yourdomain.com/path/to/logo.png", // Use a valid logo URL
-      title: "Vakyalok Legal Chat",
-      position: "bottom-left",
-      theme: {
-        color: "#2b1212",      // header/button color
-        background: "#400000", // chat background
-        text: "#338353"        // text color
-      }
-    });
-  }, []);
-
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>

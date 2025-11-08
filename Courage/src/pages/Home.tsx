@@ -1,13 +1,13 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { MessageCircle, FileText, Users, Mic, Scale, Heart, Camera } from 'lucide-react';
+import { MessageCircle, FileText, Users, Mic, Scale, Heart, Camera, BookOpen, Languages } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSelector from '@/components/LanguageSelector';
 import QuestionSection from '../components/QuestionSection';
 
 interface HomeProps {
-  onNavigate: (page: 'chat' | 'document' | 'ngo' | 'ocr') => void;
+  onNavigate: (page: 'chat' | 'document' | 'ngo' | 'ocr' | 'dictionary' | 'translator') => void;
 }
 
 const Home: React.FC<HomeProps> = ({ onNavigate }) => {
@@ -21,7 +21,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                    language === 'te' ? 'మీ భాషలో తక్షణ చట్టపరమైన మార్గదర్శకత్వం పొందండి' :
                    language === 'mr' ? 'तुमच्या भाषेत त्वरित कायदेशीर मार्गदर्शन मिळवा' :
                    'Get instant legal guidance in your language',
-      action: () => onNavigate('chat'),
+      action: () => window.open('https://sumit171205.app.n8n.cloud/webhook/86816cfb-edb3-41c2-a959-b5c72a110eb6/chat', '_blank'),
       color: 'text-[#153243]',
       bgColor: 'bg-[#153243]/10'
     },
@@ -58,6 +58,34 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                    language === 'mr' ? 'तुमच्या जवळील कायदेशीर मदत संस्था शोधा' :
                    'Find legal aid organizations near you',
       action: () => onNavigate('ngo'),
+      color: 'text-[#153243]',
+      bgColor: 'bg-[#153243]/10'
+    },
+    {
+      icon: Languages,
+      title: language === 'hi' ? 'दस्तावेज़ अनुवादक' :
+             language === 'te' ? 'డాక్యుమెంట్ అనువాదకుడు' :
+             language === 'mr' ? 'दस्तऐवज भाषांतरकार' :
+             'Document Translator',
+      description: language === 'hi' ? 'कानूनी दस्तावेजों का अनुवाद करें और समझें' :
+                   language === 'te' ? 'చట్టపరమైన పత్రాలను అనువదించండి మరియు అర్థం చేసుకోండి' :
+                   language === 'mr' ? 'कायदेशीर कागदपत्रांचे भाषांतर करा आणि समजून घ्या' :
+                   'Translate and understand legal documents',
+      action: () => onNavigate('translator'),
+      color: 'text-[#284B63]',
+      bgColor: 'bg-[#284B63]/10'
+    },
+    {
+      icon: BookOpen,
+      title: language === 'hi' ? 'कानूनी शब्दकोश' :
+             language === 'te' ? 'న్యాయ నిఘంటువు' :
+             language === 'mr' ? 'कायदेशीर शब्दकोश' :
+             'Legal Dictionary',
+      description: language === 'hi' ? 'कानूनी शब्दों और परिभाषाओं को खोजें' :
+                   language === 'te' ? 'చట్టపరమైన పదాలు మరియు నిర్వచనాలను శోధించండి' :
+                   language === 'mr' ? 'कायदेशीर शब्द आणि व्याख्या शोधा' :
+                   'Search legal terms and definitions',
+      action: () => onNavigate('dictionary'),
       color: 'text-[#153243]',
       bgColor: 'bg-[#153243]/10'
     }
