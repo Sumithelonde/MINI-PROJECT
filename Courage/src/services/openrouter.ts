@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const OPENROUTER_API_KEY = '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';
+const OPENROUTER_API_KEY = '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';
 const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
 
 export interface ChatMessage {

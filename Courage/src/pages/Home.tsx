@@ -21,7 +21,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                    language === 'te' ? 'మీ భాషలో తక్షణ చట్టపరమైన మార్గదర్శకత్వం పొందండి' :
                    language === 'mr' ? 'तुमच्या भाषेत त्वरित कायदेशीर मार्गदर्शन मिळवा' :
                    'Get instant legal guidance in your language',
-      action: () => window.open('https://sumit171205.app.n8n.cloud/webhook/86816cfb-edb3-41c2-a959-b5c72a110eb6/chat', '_blank'),
+      action: () => window.open('https://shravansapate.app.n8n.cloud/webhook/86816cfb-edb3-41c2-a959-b5c72a110eb6/chat', '_blank'),
       color: 'text-[#153243]',
       bgColor: 'bg-[#153243]/10'
     },
