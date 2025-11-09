@@ -8,7 +8,6 @@ import { ArrowRight, Loader2, Languages, Upload, Download, Home, FileText } from
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 import { sendChatMessage } from '@/services/openrouter';
-import BackToHome from './BackToHome';
 
 const supportedLanguages = {
   en: 'English',
@@ -88,10 +87,7 @@ Rules:
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto p-4">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-foreground">Legal Document Translator</h2>
-        <BackToHome />
-      </div>
+      <h2 className="text-2xl font-bold text-foreground">Legal Document Translator</h2>
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Source Text */}

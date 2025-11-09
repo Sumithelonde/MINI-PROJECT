@@ -112,7 +112,7 @@ const NGODirectory: React.FC = () => {
       </div>
 
       {/* NGO Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl mx-auto mt-4 justify-items-center">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl mx-auto mt-4 justify-items-stretch auto-rows-fr">
         {filteredNGOs.map((ngo) => (
           <Card key={ngo.id} className="hover:shadow-md transition-shadow">
             <CardHeader className="pb-3">
