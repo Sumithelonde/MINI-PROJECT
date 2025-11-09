@@ -1,194 +1,226 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Phone, MessageCircle, Mail, MapPin } from 'lucide-react';
-import { useLanguage } from '@/contexts/LanguageContext';
-import ngoData from '@/data/ngos.json';
+import { Search, MapPin, Phone, Mail, Globe, Heart, Home, Filter } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import ngosData from '@/data/ngos.json';
 
 interface NGO {
   id: string;
   name: string;
-  region: string;
   state: string;
+  region: string;
   phone?: string;
-  whatsapp?: string;
   email?: string;
+  website?: string;
+  whatsapp?: string;
   domains: string[];
-  languages?: string[];
+  languages: string[];
 }
 
-const NGODirectory: React.FC = () => {
-  const [selectedState, setSelectedState] = useState<string>('all');
-  const [selectedDomain, setSelectedDomain] = useState<string>('all');
-  const { language, t } = useLanguage();
+const NGODirectory = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedState, setSelectedState] = useState('all');
+  const [selectedDomain, setSelectedDomain] = useState('all');
+  const navigate = useNavigate();
 
-  // Provide default values for missing fields
-  const ngos: NGO[] = (ngoData as NGO[]).map(ngo => ({
-    ...ngo,
-    whatsapp: ngo.whatsapp || "",
-    email: ngo.email || "",
-    languages: ngo.languages || ["en"], // Default to English if not provided
-  }));
+  const ngos: NGO[] = ngosData;
 
-  // Get unique states and domains for filters
-  const states = useMemo(() => {
-    const uniqueStates = [...new Set(ngos.map(ngo => ngo.state))];
-    return uniqueStates.sort();
-  }, [ngos]);
+  // Extract unique states and domains
+  const states = ['all', ...Array.from(new Set(ngos.map(ngo => ngo.state)))];
+  const allDomains = Array.from(new Set(ngos.flatMap(ngo => ngo.domains)));
+  const domains = ['all', ...allDomains];
 
-  const domains = useMemo(() => {
-    const allDomains = ngos.flatMap(ngo => ngo.domains);
-    const uniqueDomains = [...new Set(allDomains)];
-    return uniqueDomains.sort();
-  }, [ngos]);
-
-  // Filter NGOs based on selection and language support
-  const filteredNGOs = useMemo(() => {
-    return ngos.filter(ngo => {
-      const stateMatch = selectedState === 'all' || ngo.state === selectedState;
-      const domainMatch = selectedDomain === 'all' || ngo.domains.includes(selectedDomain);
-      const languageMatch = ngo.languages?.includes(language);
-      return stateMatch && domainMatch && languageMatch;
-    });
-  }, [ngos, selectedState, selectedDomain, language]);
-
-  const handleWhatsAppContact = (ngo: NGO) => {
-    if (!ngo.whatsapp) return;
-    const message = encodeURIComponent(
-      language === 'hi' ? `नमस्ते, मुझे कानूनी सहायता चाहिए। ${ngo.name} से संपर्क करना चाहता हूं।` :
-      language === 'te' ? `నమస్కారం, నాకు న్యాయ సహాయం అవసరం. ${ngo.name} ని సంప్రదించాలనుకుంటున్నాను.` :
-      language === 'mr' ? `नमस्कार, मला कायदेशीर मदत हवी आहे. ${ngo.name} शी संपर्क साधू इच्छितो.` :
-      `Hello, I need legal assistance. Would like to contact ${ngo.name}.`
-    );
-    window.open(`https://wa.me/${ngo.whatsapp.replace(/[^0-9]/g, '')}?text=${message}`, '_blank');
-  };
+  const filteredNGOs = ngos.filter(ngo => {
+    const matchesSearch = 
+      ngo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ngo.region.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ngo.domains.some(domain => domain.toLowerCase().includes(searchTerm.toLowerCase()));
+    
+    const matchesState = selectedState === 'all' || ngo.state === selectedState;
+    const matchesDomain = selectedDomain === 'all' || ngo.domains.includes(selectedDomain);
+    
+    return matchesSearch && matchesState && matchesDomain;
+  });
 
   return (
-    <div className="flex flex-col items-center w-full px-4">
-      {/* Header */}
-      <div className="text-center space-y-2 w-full max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold text-foreground">{t('ngoDirectory')}</h2>
-        <p className="text-muted-foreground">
-          Find legal aid organizations in your region
-        </p>
+    <div className="space-y-6 max-w-6xl mx-auto p-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-foreground">NGO Directory</h2>
+        <Button variant="outline" size="sm" onClick={() => navigate('/')}>
+          <Home className="h-4 w-4 mr-2" />
+          Home
+        </Button>
       </div>
 
-      {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4 w-full max-w-4xl mx-auto mt-4">
-        <div className="flex-1">
-          <Select value={selectedState} onValueChange={setSelectedState}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select State" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All States</SelectItem>
-              {states.map(state => (
-                <SelectItem key={state} value={state}>{state}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        
-        <div className="flex-1">
-          <Select value={selectedDomain} onValueChange={setSelectedDomain}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select Domain" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Domains</SelectItem>
-              {domains.map(domain => (
-                <SelectItem key={domain} value={domain}>{domain}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+      {/* Search and Filter */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Heart className="h-5 w-5" />
+            Find NGOs & Support Organizations
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="flex gap-2">
+              <Input
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search by name, region, or domain..."
+                className="flex-1"
+              />
+              <Button>
+                <Search className="h-4 w-4" />
+              </Button>
+            </div>
 
-      {/* Results count */}
-      <div className="text-sm text-muted-foreground w-full max-w-4xl mx-auto mt-2">
-        Showing {filteredNGOs.length} organizations that support {language.toUpperCase()}
-      </div>
-
-      {/* NGO Cards */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl mx-auto mt-4 justify-items-stretch auto-rows-fr">
-        {filteredNGOs.map((ngo) => (
-          <Card key={ngo.id} className="hover:shadow-md transition-shadow">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg">{ngo.name}</CardTitle>
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                <MapPin className="h-4 w-4" />
-                {ngo.region}, {ngo.state}
+            {/* State Filter */}
+            <div className="space-y-2">
+              <p className="text-sm text-muted-foreground flex items-center gap-2">
+                <Filter className="h-4 w-4" />
+                Filter by State:
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {states.map((state) => (
+                  <Button
+                    key={state}
+                    variant={selectedState === state ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedState(state)}
+                  >
+                    {state === 'all' ? 'All States' : state}
+                  </Button>
+                ))}
               </div>
-            </CardHeader>
-            
-            <CardContent className="space-y-4">
-              {/* Domains */}
-              <div>
-                <p className="text-sm font-medium mb-2">Specializations:</p>
-                <div className="flex flex-wrap gap-1">
-                  {ngo.domains.slice(0, 3).map((domain) => (
-                    <Badge key={domain} variant="secondary" className="text-xs">
+            </div>
+
+            {/* Domain Filter */}
+            <div className="space-y-2">
+              <p className="text-sm text-muted-foreground">Filter by Domain:</p>
+              <div className="flex flex-wrap gap-2">
+                {domains.slice(0, 10).map((domain) => (
+                  <Button
+                    key={domain}
+                    variant={selectedDomain === domain ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedDomain(domain)}
+                  >
+                    {domain === 'all' ? 'All Domains' : domain}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="text-sm text-muted-foreground">
+              Showing {filteredNGOs.length} of {ngos.length} NGOs
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* NGO List */}
+      <div className="grid gap-4 md:grid-cols-2">
+        {filteredNGOs.length > 0 ? (
+          filteredNGOs.map((ngo) => (
+            <Card key={ngo.id} className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <CardTitle className="text-lg">{ngo.name}</CardTitle>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {ngo.domains.map((domain, idx) => (
+                    <span 
+                      key={idx}
+                      className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full"
+                    >
                       {domain}
-                    </Badge>
+                    </span>
                   ))}
-                  {ngo.domains.length > 3 && (
-                    <Badge variant="outline" className="text-xs">
-                      +{ngo.domains.length - 3}
-                    </Badge>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                    <span>{ngo.region}, {ngo.state}</span>
+                  </div>
+                  
+                  {ngo.phone && (
+                    <div className="flex items-center gap-2">
+                      <Phone className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                      <a 
+                        href={`tel:${ngo.phone.split('/')[0].trim()}`} 
+                        className="hover:underline text-blue-600"
+                      >
+                        {ngo.phone}
+                      </a>
+                    </div>
+                  )}
+                  
+                  {ngo.email && (
+                    <div className="flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                      <a 
+                        href={`mailto:${ngo.email}`} 
+                        className="hover:underline text-blue-600 break-all"
+                      >
+                        {ngo.email}
+                      </a>
+                    </div>
+                  )}
+                  
+                  {ngo.website && (
+                    <div className="flex items-center gap-2">
+                      <Globe className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                      <a 
+                        href={`https://${ngo.website}`} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="hover:underline text-blue-600 break-all"
+                      >
+                        {ngo.website}
+                      </a>
+                    </div>
                   )}
                 </div>
-              </div>
 
-              {/* Contact options */}
-              <div className="flex flex-col gap-2">
-                {ngo.phone && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full justify-start"
-                    onClick={() => window.open(`tel:${ngo.phone}`)}
-                  >
-                    <Phone className="h-4 w-4 mr-2" />
-                    Call
-                  </Button>
+                {(ngo.phone || ngo.email) && (
+                  <div className="flex gap-2 mt-4">
+                    {ngo.phone && (
+                      <Button 
+                        className="flex-1" 
+                        variant="outline"
+                        size="sm"
+                        onClick={() => window.open(`tel:${ngo.phone?.split('/')[0].trim()}`)}
+                      >
+                        <Phone className="h-3 w-3 mr-1" />
+                        Call
+                      </Button>
+                    )}
+                    {ngo.email && (
+                      <Button 
+                        className="flex-1" 
+                        variant="outline"
+                        size="sm"
+                        onClick={() => window.open(`mailto:${ngo.email}`)}
+                      >
+                        <Mail className="h-3 w-3 mr-1" />
+                        Email
+                      </Button>
+                    )}
+                  </div>
                 )}
-                {ngo.whatsapp && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full justify-start text-empowerment-green border-empowerment-green hover:bg-empowerment-green hover:text-white"
-                    onClick={() => handleWhatsAppContact(ngo)}
-                  >
-                    <MessageCircle className="h-4 w-4 mr-2" />
-                    WhatsApp
-                  </Button>
-                )}
-                {ngo.email && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full justify-start"
-                    onClick={() => window.open(`mailto:${ngo.email}`)}
-                  >
-                    <Mail className="h-4 w-4 mr-2" />
-                    Email
-                  </Button>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <div className="col-span-2 text-center py-12 text-muted-foreground">
+            <Heart className="h-12 w-12 mx-auto mb-4 opacity-50" />
+            <p className="text-lg font-medium">No NGOs found</p>
+            <p className="text-sm mt-2">Try adjusting your search or filters</p>
+          </div>
+        )}
       </div>
-
-      {filteredNGOs.length === 0 && (
-        <div className="text-center py-8 w-full max-w-4xl mx-auto">
-          <p className="text-muted-foreground">
-            No organizations found matching your criteria. Try adjusting the filters.
-          </p>
-        </div>
-      )}
     </div>
   );
 };
