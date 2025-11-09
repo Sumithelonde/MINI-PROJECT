@@ -7,7 +7,6 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 import { sendChatMessage } from '@/services/openrouter';
 import { useNavigate } from 'react-router-dom';
-import BackToHome from './BackToHome';
 
 const LegalDictionary = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -68,10 +67,7 @@ Keep the explanation simple and easy to understand for non-lawyers.`;
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto p-4">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-foreground">Legal Dictionary</h2>
-        <BackToHome />
-      </div>
+      <h2 className="text-2xl font-bold text-foreground">Legal Dictionary</h2>
 
       {/* Search Section */}
       <Card>

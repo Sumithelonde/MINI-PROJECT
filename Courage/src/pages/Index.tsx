@@ -95,11 +95,40 @@ const Index = () => {
           </div>
         );
       case 'dictionary':
-        return <LegalDictionary />;
+        return (
+          <div className="container mx-auto px-4 py-8">
+            <div className="mb-6">
+              <Button 
+                variant="outline" 
+                onClick={() => setCurrentPage('home')}
+                className="mb-4 inline-flex items-center gap-2 text-foreground bg-background hover:bg-accent hover:scale-105 px-4 py-2 transition-all duration-200 ease-in-out border border-border shadow-sm hover:shadow-md"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                <span className="font-medium">Back to Home</span>
+              </Button>
+            </div>
+            <LegalDictionary />
+          </div>
+        );
       case 'translator':
-        return <DocumentTranslator />;
+        return (
+          <div className="container mx-auto px-4 py-8">
+            <div className="mb-6">
+              <Button 
+                variant="outline" 
+                onClick={() => setCurrentPage('home')}
+                className="mb-4 inline-flex items-center gap-2 text-foreground bg-background hover:bg-accent hover:scale-105 px-4 py-2 transition-all duration-200 ease-in-out border border-border shadow-sm hover:shadow-md"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                <span className="font-medium">Back to Home</span>
+              </Button>
+            </div>
+            <DocumentTranslator />
+          </div>
+        );
       default:
         return <Home onNavigate={handleNavigate} />;
+        
     }
   };
 
